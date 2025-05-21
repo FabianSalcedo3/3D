@@ -9,9 +9,11 @@ const renderer = new THREE.WebGLRenderer();
 // renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1); // Creo una geometria cubica
+const cube = new THREE.BoxGeometry(1, 1, 1); // Creo una geometria cubica
+const icosahedron = new THREE.IcosahedronGeometry(0.7, 0); // Creo una geometria icosaedrica
+const dodecahedron = new THREE.DodecahedronGeometry(0.7, 0); // Creo una geometria dodecaedrica
 
-camera.position.z = 4;
+camera.position.z = 5;
 
 // Aggiungo una luce alla scena
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -26,6 +28,12 @@ function makeInstance(geometry, color, x) {
   return cube;
 }
 
+const objects = [
+  makeInstance(cube, 0x44aa88, 0),
+  makeInstance(icosahedron, 0x8844aa, -2),
+  makeInstance(dodecahedron, 0xaa8844, 2),
+];
+
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement;
   const width = canvas.clientWidth;
@@ -37,12 +45,6 @@ function resizeRendererToDisplaySize(renderer) {
   return needResize;
 }
 
-const cubes = [
-  makeInstance(geometry, 0x44aa88, 0),
-  makeInstance(geometry, 0x8844aa, -2),
-  makeInstance(geometry, 0xaa8844, 2),
-];
-
 function animate() {
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
@@ -50,9 +52,9 @@ function animate() {
     camera.updateProjectionMatrix();
   }
 
-  cubes.forEach((cube, index) => {
-    cube.rotation.x += index * 0.002 + 0.008;
-    cube.rotation.y += index * 0.001 + 0.008;
+  objects.forEach((object, index) => {
+    object.rotation.x += index * 0.002 + 0.008;
+    object.rotation.y += index * 0.001 + 0.008;
   });
   renderer.render(scene, camera);
 }
